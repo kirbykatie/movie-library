@@ -1,0 +1,41 @@
+/************************ 4 - Elements ***********************/
+// bare HTML elements (H1, a, p, etc…)
+
+h1, h2, h3, h4, h5, h6, p, a, div {
+	font-family:'Lato', Helvetica, Arial, sans-serif;
+}
+
+p {
+	margin-bottom:20px;
+}
+
+img {
+	max-width:100%;
+}
+header {
+	display:flex;
+	z-index:12;
+	position:relative;
+	width:100vw;
+	height:60px;
+	background-color:#673AB7; 
+	align-content: center;
+	justify-content: center;
+	h1 {
+		color:#fff;
+		font-size:36px;
+		align-self:center;
+	}
+}
+
+main {
+	display:flex;
+	flex-wrap:wrap;
+	justify-content: space-between;
+	align-items:center;
+	margin:10px;
+}
+
+.material-icons {
+	font-family:"Material Icons";
+}
