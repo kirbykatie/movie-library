@@ -5,6 +5,7 @@ React Project that catalogs a movie collection with filtering &amp; searching
 
 ## Current Codebase
 - Displays all movies in my personal movie collection
+- Uses [The Movie Database API](https://developers.themoviedb.org) to populate movie data and images. 
 - When selected, additional movie details appear
 - Has a switch between alphabetically organized and random
 - Has a checkbox to filter out unwatched movies 
