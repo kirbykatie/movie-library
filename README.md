@@ -1,6 +1,8 @@
 # Movie Library
 React Project that catalogs a movie collection with filtering &amp; searching
 
+![Initial Screen](/basic-screen.jpg "Initial Screen")
+
 ## Current Codebase
 - Displays all movies in my personal movie collection
 - When selected, additional movie details appear
