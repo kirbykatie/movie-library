@@ -1,4 +1,4 @@
-# movie-library
+# Movie Library
 React Project that catalogs a movie collection with filtering &amp; searching
 
 ## Current Codebase
