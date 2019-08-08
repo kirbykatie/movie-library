@@ -71,7 +71,7 @@ img {
 
 header {
   display: flex;
-  z-index: 12;
+  z-index: 20;
   position: relative;
   width: 100vw;
   height: 60px;
@@ -187,14 +187,14 @@ main {
 /**************************** Sidebar **************************/
 .sidebar {
   position: fixed;
-  z-index: 10;
+  z-index: 15;
   top: 0;
   width: 375px;
   height: 100vh;
   background-color: white;
   box-shadow: 4px 5px 10px #575757;
 }
-.sidebar_wrap {
+.sidebar__wrap {
   margin-top: 60px;
   padding: 20px;
   overflow: scroll;

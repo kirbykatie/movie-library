@@ -1,38 +1,22 @@
 import React from "react";
 import { Link, Router } from "@reach/router";
 import MovieCard from "./MovieCard";
-import { tempData, dataForDB, dataFromDB } from "../data/tempData";
-import { fetchData, createSearchRequest } from "../functions/getMovieData";
 import { arrShuffle } from "../functions/utility";
 
 class MovieContainer extends React.Component {
 	constructor(props) {
 		super(props);
-		//TODO: add a 'loading' bool
-		this.state = {
-			movies: [],
-			activeMovie: null,
-			alphabetize: true,
-			excludeNotWatched: false
-		}
-		this.toggleOrganize = this.toggleOrganize.bind(this);
+
+		/*this.toggleOrganize = this.toggleOrganize.bind(this);
 		this.toggleUnwatched = this.toggleUnwatched.bind(this);
-		this.checkFilters = this.checkFilters.bind(this);
+		this.checkFilters = this.checkFilters.bind(this);*/
 	}
 
-	componentDidMount() {
+	/*componentDidMount() {
 		//TODO: organize and label header filters.
 		document.querySelector(".tgl-btn").addEventListener('click', this.toggleOrganize);
 		document.querySelector("#includedUnwatched").checked = true;
 		document.querySelector("#includedUnwatched").addEventListener('click', this.toggleUnwatched);
-		const currentMovieData = dataFromDB();
-		if (!currentMovieData) {
-			this.getDataFromServer();
-		} else {
-			this.setState({
-				movies: currentMovieData
-			})
-		}
 	}
 
 	toggleOrganize(event) {
@@ -65,79 +49,67 @@ class MovieContainer extends React.Component {
 				excludeNotWatched: true
 			})
 		}
-	}
-
-	getDataFromServer() {
-		let movies = [];
-		function createData(rawData) {
-			console.log(rawData);
-			let movie = {
-				id: rawData.id,
-				title: rawData.title,
-				description: rawData.overview,
-				year: rawData.release_date.slice(0,4),
-				release_date: rawData.release_date,
-				watched: true,
-	    	rating: null,
-				genre: rawData.genres,
-				runtime: rawData.runtime,
-				quality: null,
-		    subtitles: null,
-		    franchise: null,
-		    tags:[],
-				poster: `http://image.tmdb.org/t/p/w500${rawData.poster_path}`,
-				backdrop: `http://image.tmdb.org/t/p/w1280${rawData.backdrop_path}`
-			}
-			movies.push(movie);
-			console.log(movies);
-		}
-		const movieSearchData = dataForDB();
-			console.log(movieSearchData);
-
-			let counter = 0;
-			console.log("movieSearchData is " + movieSearchData.length);
-			this.interval = window.setInterval(() => {
-				const requestURL = createSearchRequest(movieSearchData[counter]);
-				fetchData(requestURL, createData);	//so for some reason setState only updates when the interval runs the next time, which is probably related to the delay of the fetch, but I can't add setState to createData because it's not a class function and I TRIED making createData a class function AND a callback function, and that didn't work. So we can try again later. For now, just sticking another Endgame at the end of the search JSON.
-				//Possible solution to above comment's problem - need to bind the function to "this" at the beginning of the componentDidMount function?
-				this.setState({
-					movies
-				})
-				
-				counter += 1;
-				if (counter >= movieSearchData.length) {
-					clearInterval(this.interval);
-				}
-				
-			}, 500)
-	}
+	}*/
 
 	checkFilters() {
-		const { movies, alphabetize, excludeNotWatched } = this.state;
-		//Replace below line with deep copy - will need to copy by value each time because filtering will remove
-		//unless we add the filter to the map in render()? 
+		const { movies, movieDisplay } = this.props;
 		let renderedMovies;
-		if (alphabetize) {
-			renderedMovies = movies.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
-		} else {
-			renderedMovies = arrShuffle(movies);
+		if (movies) {
+			let testGenres = [
+				{
+					id: 16,
+					name: "Animation"
+				},
+				{
+					id:27,
+					name: "Horror"
+				}
+			];
+			if (movieDisplay.alphabetize) {
+				renderedMovies = movies.sort((a,b) => (a.title > b.title) ? 1 : ((b.title > a.title) ? -1 : 0));
+			} else {
+				renderedMovies = arrShuffle(movies);
+			}
+			if (movieDisplay.excludeNotWatched) {
+				renderedMovies = movies.filter(movie => movie.watched === true);
+			} 
+			if (movieDisplay.genresToShow.length !== 0) {
+				let genreMovies = [];
+				renderedMovies.forEach(movie => {
+					let genres = movie.genre;
+					for (const genre of genres) {
+						let flag = false
+						for (const genreToShow of testGenres) {
+							if (genre.name === genreToShow.name) {
+								genreMovies.push(movie);
+								flag = true;
+								break;
+							}
+						}
+						if (flag) {
+							flag = false;
+							break;
+						}
+					}
+				});
+				console.log(genreMovies);
+				renderedMovies = genreMovies;
+			}
 		}
-		if (excludeNotWatched) {
-			renderedMovies = movies.filter(movie => movie.watched == true);
-		} 
 		return renderedMovies;
 	}
 
 	render() {
-		console.log(this.state);
-		if (this.state.movies.length === 0) {
+		const { movies, sidebarOpen } = this.props;
+		const renderedMovies = this.checkFilters();
+		if (renderedMovies.length === 0) {
 			return (
 				<main></main>
 			)
 		} else {
-			const renderedMovies = this.checkFilters();
 			return (
-			<main>
+			<main className=
+				{sidebarOpen ? "sidebar--active" : "" }>
 				{	renderedMovies.map(movie => {
 					return (
 						<MovieCard 
@@ -152,6 +124,7 @@ class MovieContainer extends React.Component {
 							runtime={movie.runtime}
 							genre={movie.genre}
 							rating={movie.rating}
+							sidebarOpen={sidebarOpen}
 						/>
 					)
 				})}

@@ -28377,7 +28377,98 @@ var createRoute = function createRoute(basepath) {
 var shouldNavigate = function shouldNavigate(event) {
   return !event.defaultPrevented && event.button === 0 && !(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey);
 }; ////////////////////////////////////////////////////////////////////////
-},{"react":"../node_modules/react/index.js","warning":"../node_modules/warning/browser.js","prop-types":"../node_modules/prop-types/index.js","invariant":"../node_modules/invariant/browser.js","create-react-context":"../node_modules/create-react-context/lib/index.js","react-lifecycles-compat":"../node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js","./lib/utils":"../node_modules/@reach/router/es/lib/utils.js","./lib/history":"../node_modules/@reach/router/es/lib/history.js"}],"js/components/Modal.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","warning":"../node_modules/warning/browser.js","prop-types":"../node_modules/prop-types/index.js","invariant":"../node_modules/invariant/browser.js","create-react-context":"../node_modules/create-react-context/lib/index.js","react-lifecycles-compat":"../node_modules/react-lifecycles-compat/react-lifecycles-compat.es.js","./lib/utils":"../node_modules/@reach/router/es/lib/utils.js","./lib/history":"../node_modules/@reach/router/es/lib/history.js"}],"js/components/Sidebar.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _router = require("@reach/router");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var Sidebar =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(Sidebar, _React$Component);
+
+  function Sidebar(props) {
+    var _this;
+
+    _classCallCheck(this, Sidebar);
+
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(Sidebar).call(this, props));
+    _this.handleClick = _this.handleClick.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  _createClass(Sidebar, [{
+    key: "handleClick",
+    value: function handleClick(e) {
+      console.log(e.target.id);
+
+      if (e.target.checked) {
+        this.props.callback(e.target.id, true);
+      } else {
+        this.props.callback(e.target.id, false);
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      var _this$props = this.props,
+          genres = _this$props.genres,
+          callback = _this$props.callback;
+      return _react.default.createElement("section", {
+        className: "sidebar"
+      }, _react.default.createElement("div", {
+        className: "sidebar__wrap"
+      }, _react.default.createElement("form", null, genres.map(function (genre) {
+        return _react.default.createElement("div", {
+          className: "genre__wrap",
+          key: genre.id
+        }, _react.default.createElement("input", {
+          type: "checkbox",
+          id: genre.name,
+          name: genre.name,
+          onClick: _this2.handleClick
+        }), _react.default.createElement("label", {
+          htmlFor: genre.name
+        }, genre.name));
+      }))));
+    }
+  }]);
+
+  return Sidebar;
+}(_react.default.Component);
+
+var _default = Sidebar;
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","@reach/router":"../node_modules/@reach/router/es/index.js"}],"js/components/Modal.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -35733,17 +35824,14 @@ function (_React$Component) {
   }
 
   _createClass(MovieCard, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      window.addEventListener("click", this.handleWindowClick);
-    }
-  }, {
     key: "handleCardClick",
     value: function handleCardClick(e) {
-      e.preventDefault();
-      this.setState({
-        showDetails: true
-      });
+      if (!this.props.sidebarOpen) {
+        e.preventDefault();
+        this.setState({
+          showDetails: true
+        });
+      }
     }
   }, {
     key: "handleCloseModal",
@@ -35815,7 +35903,247 @@ function (_React$Component) {
 
 var _default = MovieCard;
 exports.default = _default;
-},{"react":"../node_modules/react/index.js","@reach/router":"../node_modules/@reach/router/es/index.js","./Modal":"js/components/Modal.js","./MovieDetail":"js/components/MovieDetail.js"}],"js/data/tempData.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","@reach/router":"../node_modules/@reach/router/es/index.js","./Modal":"js/components/Modal.js","./MovieDetail":"js/components/MovieDetail.js"}],"js/functions/utility.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.arrShuffle = arrShuffle;
+
+function arrShuffle(array) {
+  var shuffedArray = array;
+  var currentIndex = shuffedArray.length,
+      temporaryValue,
+      randomIndex; // While there remain elements to shuffle...
+
+  while (0 !== currentIndex) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1; // And swap it with the current element.
+
+    temporaryValue = shuffedArray[currentIndex];
+    shuffedArray[currentIndex] = shuffedArray[randomIndex];
+    shuffedArray[randomIndex] = temporaryValue;
+  }
+
+  return shuffedArray;
+}
+},{}],"js/components/MovieContainer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _react = _interopRequireDefault(require("react"));
+
+var _router = require("@reach/router");
+
+var _MovieCard = _interopRequireDefault(require("./MovieCard"));
+
+var _utility = require("../functions/utility");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+var MovieContainer =
+/*#__PURE__*/
+function (_React$Component) {
+  _inherits(MovieContainer, _React$Component);
+
+  function MovieContainer(props) {
+    _classCallCheck(this, MovieContainer);
+
+    return _possibleConstructorReturn(this, _getPrototypeOf(MovieContainer).call(this, props));
+    /*this.toggleOrganize = this.toggleOrganize.bind(this);
+    this.toggleUnwatched = this.toggleUnwatched.bind(this);
+    this.checkFilters = this.checkFilters.bind(this);*/
+  }
+  /*componentDidMount() {
+  	//TODO: organize and label header filters.
+  	document.querySelector(".tgl-btn").addEventListener('click', this.toggleOrganize);
+  	document.querySelector("#includedUnwatched").checked = true;
+  	document.querySelector("#includedUnwatched").addEventListener('click', this.toggleUnwatched);
+  }
+  	toggleOrganize(event) {
+  	console.log('in toggleOrganize');
+  	const checkbox = document.querySelector(".tgl");
+  	if (checkbox.checked == true) { //alphabetize
+  		console.log("alphabetizing");
+  		this.setState({
+  			alphabetize: true
+  		})
+  	} else {
+  		console.log('randomizing');
+  		this.setState({
+  			alphabetize: false
+  		})
+  	}
+  }
+  	toggleUnwatched(event) {
+  	console.log("in toggleUnwatched");
+  	const checkbox = event.target;
+  	if (checkbox.checked == true) {
+  		console.log("including not watched");
+  		this.setState({
+  			excludeNotWatched: false
+  		})
+  	} else {
+  		console.log("excluding not watched");
+  		this.setState({
+  			excludeNotWatched: true
+  		})
+  	}
+  }*/
+
+
+  _createClass(MovieContainer, [{
+    key: "checkFilters",
+    value: function checkFilters() {
+      var _this$props = this.props,
+          movies = _this$props.movies,
+          movieDisplay = _this$props.movieDisplay;
+      var renderedMovies;
+
+      if (movies) {
+        var testGenres = [{
+          id: 16,
+          name: "Animation"
+        }, {
+          id: 27,
+          name: "Horror"
+        }];
+
+        if (movieDisplay.alphabetize) {
+          renderedMovies = movies.sort(function (a, b) {
+            return a.title > b.title ? 1 : b.title > a.title ? -1 : 0;
+          });
+        } else {
+          renderedMovies = (0, _utility.arrShuffle)(movies);
+        }
+
+        if (movieDisplay.excludeNotWatched) {
+          renderedMovies = movies.filter(function (movie) {
+            return movie.watched === true;
+          });
+        }
+
+        if (movieDisplay.genresToShow.length !== 0) {
+          var genreMovies = [];
+          renderedMovies.forEach(function (movie) {
+            var genres = movie.genre;
+            var _iteratorNormalCompletion = true;
+            var _didIteratorError = false;
+            var _iteratorError = undefined;
+
+            try {
+              for (var _iterator = genres[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+                var genre = _step.value;
+                var flag = false;
+
+                for (var _i = 0, _testGenres = testGenres; _i < _testGenres.length; _i++) {
+                  var genreToShow = _testGenres[_i];
+
+                  if (genre.name === genreToShow.name) {
+                    genreMovies.push(movie);
+                    flag = true;
+                    break;
+                  }
+                }
+
+                if (flag) {
+                  flag = false;
+                  break;
+                }
+              }
+            } catch (err) {
+              _didIteratorError = true;
+              _iteratorError = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion && _iterator.return != null) {
+                  _iterator.return();
+                }
+              } finally {
+                if (_didIteratorError) {
+                  throw _iteratorError;
+                }
+              }
+            }
+          });
+          console.log(genreMovies);
+          renderedMovies = genreMovies;
+        }
+      }
+
+      return renderedMovies;
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var _this$props2 = this.props,
+          movies = _this$props2.movies,
+          sidebarOpen = _this$props2.sidebarOpen;
+      var renderedMovies = this.checkFilters();
+
+      if (renderedMovies.length === 0) {
+        return _react.default.createElement("main", null);
+      } else {
+        return _react.default.createElement("main", {
+          className: sidebarOpen ? "sidebar--active" : ""
+        }, renderedMovies.map(function (movie) {
+          var _React$createElement;
+
+          return _react.default.createElement(_MovieCard.default, (_React$createElement = {
+            key: movie.id,
+            poster: movie.poster,
+            backdrop: movie.backdrop,
+            title: movie.title,
+            desc: movie.description,
+            year: movie.year,
+            rating: movie.rating,
+            release_date: movie.release_date,
+            runtime: movie.runtime,
+            genre: movie.genre
+          }, _defineProperty(_React$createElement, "rating", movie.rating), _defineProperty(_React$createElement, "sidebarOpen", sidebarOpen), _React$createElement));
+        }));
+      }
+    }
+  }]);
+
+  return MovieContainer;
+}(_react.default.Component);
+
+var _default = MovieContainer;
+/*When you need to grab raw JSON from the page...
+<pre>
+  <code>{JSON.stringify(this.state.movies)}</code>
+</pre>
+*/
+
+exports.default = _default;
+},{"react":"../node_modules/react/index.js","@reach/router":"../node_modules/@reach/router/es/index.js","./MovieCard":"js/components/MovieCard.js","../functions/utility":"js/functions/utility.js"}],"js/data/tempData.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -36181,9 +36509,6 @@ function dataForDB() {
     "year": null
   }, {
     "title": "The Hunger Games",
-    "year": null
-  }, {
-    "title": "The Hunger Games 2: Catching Fire",
     "year": null
   }, {
     "title": "I Love You Phillip Morris",
@@ -42880,268 +43205,7 @@ function fetchGenres(callback) {
     callback(data);
   });
 }
-},{}],"js/functions/utility.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.arrShuffle = arrShuffle;
-
-function arrShuffle(array) {
-  var shuffedArray = array;
-  var currentIndex = shuffedArray.length,
-      temporaryValue,
-      randomIndex; // While there remain elements to shuffle...
-
-  while (0 !== currentIndex) {
-    // Pick a remaining element...
-    randomIndex = Math.floor(Math.random() * currentIndex);
-    currentIndex -= 1; // And swap it with the current element.
-
-    temporaryValue = shuffedArray[currentIndex];
-    shuffedArray[currentIndex] = shuffedArray[randomIndex];
-    shuffedArray[randomIndex] = temporaryValue;
-  }
-
-  return shuffedArray;
-}
-},{}],"js/components/MovieContainer.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.default = void 0;
-
-var _react = _interopRequireDefault(require("react"));
-
-var _router = require("@reach/router");
-
-var _MovieCard = _interopRequireDefault(require("./MovieCard"));
-
-var _tempData = require("../data/tempData");
-
-var _getMovieData = require("../functions/getMovieData");
-
-var _utility = require("../functions/utility");
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
-
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-var MovieContainer =
-/*#__PURE__*/
-function (_React$Component) {
-  _inherits(MovieContainer, _React$Component);
-
-  function MovieContainer(props) {
-    var _this;
-
-    _classCallCheck(this, MovieContainer);
-
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(MovieContainer).call(this, props)); //TODO: add a 'loading' bool
-
-    _this.state = {
-      movies: [],
-      activeMovie: null,
-      alphabetize: true,
-      excludeNotWatched: false
-    };
-    _this.toggleOrganize = _this.toggleOrganize.bind(_assertThisInitialized(_this));
-    _this.toggleUnwatched = _this.toggleUnwatched.bind(_assertThisInitialized(_this));
-    _this.checkFilters = _this.checkFilters.bind(_assertThisInitialized(_this));
-    return _this;
-  }
-
-  _createClass(MovieContainer, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      //TODO: organize and label header filters.
-      document.querySelector(".tgl-btn").addEventListener('click', this.toggleOrganize);
-      document.querySelector("#includedUnwatched").checked = true;
-      document.querySelector("#includedUnwatched").addEventListener('click', this.toggleUnwatched);
-      var currentMovieData = (0, _tempData.dataFromDB)();
-
-      if (!currentMovieData) {
-        this.getDataFromServer();
-      } else {
-        this.setState({
-          movies: currentMovieData
-        });
-      }
-    }
-  }, {
-    key: "toggleOrganize",
-    value: function toggleOrganize(event) {
-      console.log('in toggleOrganize');
-      var checkbox = document.querySelector(".tgl");
-
-      if (checkbox.checked == true) {
-        //alphabetize
-        console.log("alphabetizing");
-        this.setState({
-          alphabetize: true
-        });
-      } else {
-        console.log('randomizing');
-        this.setState({
-          alphabetize: false
-        });
-      }
-    }
-  }, {
-    key: "toggleUnwatched",
-    value: function toggleUnwatched(event) {
-      console.log("in toggleUnwatched");
-      var checkbox = event.target;
-
-      if (checkbox.checked == true) {
-        console.log("including not watched");
-        this.setState({
-          excludeNotWatched: false
-        });
-      } else {
-        console.log("excluding not watched");
-        this.setState({
-          excludeNotWatched: true
-        });
-      }
-    }
-  }, {
-    key: "getDataFromServer",
-    value: function getDataFromServer() {
-      var _this2 = this;
-
-      var movies = [];
-
-      function createData(rawData) {
-        console.log(rawData);
-        var movie = {
-          id: rawData.id,
-          title: rawData.title,
-          description: rawData.overview,
-          year: rawData.release_date.slice(0, 4),
-          release_date: rawData.release_date,
-          watched: true,
-          rating: null,
-          genre: rawData.genres,
-          runtime: rawData.runtime,
-          quality: null,
-          subtitles: null,
-          franchise: null,
-          tags: [],
-          poster: "http://image.tmdb.org/t/p/w500".concat(rawData.poster_path),
-          backdrop: "http://image.tmdb.org/t/p/w1280".concat(rawData.backdrop_path)
-        };
-        movies.push(movie);
-        console.log(movies);
-      }
-
-      var movieSearchData = (0, _tempData.dataForDB)();
-      console.log(movieSearchData);
-      var counter = 0;
-      console.log("movieSearchData is " + movieSearchData.length);
-      this.interval = window.setInterval(function () {
-        var requestURL = (0, _getMovieData.createSearchRequest)(movieSearchData[counter]);
-        (0, _getMovieData.fetchData)(requestURL, createData); //so for some reason setState only updates when the interval runs the next time, which is probably related to the delay of the fetch, but I can't add setState to createData because it's not a class function and I TRIED making createData a class function AND a callback function, and that didn't work. So we can try again later. For now, just sticking another Endgame at the end of the search JSON.
-        //Possible solution to above comment's problem - need to bind the function to "this" at the beginning of the componentDidMount function?
-
-        _this2.setState({
-          movies: movies
-        });
-
-        counter += 1;
-
-        if (counter >= movieSearchData.length) {
-          clearInterval(_this2.interval);
-        }
-      }, 500);
-    }
-  }, {
-    key: "checkFilters",
-    value: function checkFilters() {
-      var _this$state = this.state,
-          movies = _this$state.movies,
-          alphabetize = _this$state.alphabetize,
-          excludeNotWatched = _this$state.excludeNotWatched; //Replace below line with deep copy - will need to copy by value each time because filtering will remove
-      //unless we add the filter to the map in render()? 
-
-      var renderedMovies;
-
-      if (alphabetize) {
-        renderedMovies = movies.sort(function (a, b) {
-          return a.title > b.title ? 1 : b.title > a.title ? -1 : 0;
-        });
-      } else {
-        renderedMovies = (0, _utility.arrShuffle)(movies);
-      }
-
-      if (excludeNotWatched) {
-        renderedMovies = movies.filter(function (movie) {
-          return movie.watched == true;
-        });
-      }
-
-      return renderedMovies;
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      console.log(this.state);
-
-      if (this.state.movies.length === 0) {
-        return _react.default.createElement("main", null);
-      } else {
-        var renderedMovies = this.checkFilters();
-        return _react.default.createElement("main", null, renderedMovies.map(function (movie) {
-          return _react.default.createElement(_MovieCard.default, _defineProperty({
-            key: movie.id,
-            poster: movie.poster,
-            backdrop: movie.backdrop,
-            title: movie.title,
-            desc: movie.description,
-            year: movie.year,
-            rating: movie.rating,
-            release_date: movie.release_date,
-            runtime: movie.runtime,
-            genre: movie.genre
-          }, "rating", movie.rating));
-        }));
-      }
-    }
-  }]);
-
-  return MovieContainer;
-}(_react.default.Component);
-
-var _default = MovieContainer;
-/*When you need to grab raw JSON from the page...
-<pre>
-  <code>{JSON.stringify(this.state.movies)}</code>
-</pre>
-*/
-
-exports.default = _default;
-},{"react":"../node_modules/react/index.js","@reach/router":"../node_modules/@reach/router/es/index.js","./MovieCard":"js/components/MovieCard.js","../data/tempData":"js/data/tempData.js","../functions/getMovieData":"js/functions/getMovieData.js","../functions/utility":"js/functions/utility.js"}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{}],"../node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -43222,7 +43286,11 @@ var _reactDom = require("react-dom");
 
 var _router = require("@reach/router");
 
+var _Sidebar = _interopRequireDefault(require("./components/Sidebar"));
+
 var _MovieContainer = _interopRequireDefault(require("./components/MovieContainer"));
+
+var _tempData = require("./data/tempData");
 
 var _getMovieData = require("./functions/getMovieData");
 
@@ -43231,6 +43299,10 @@ require("../sass/main.scss");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -43260,9 +43332,19 @@ function (_React$Component) {
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
     _this.state = {
-      genres: []
+      movies: [],
+      genres: [],
+      sidebarOpen: true,
+      movieDisplay: {
+        alphabetize: true,
+        excludeNotWatched: false,
+        genresToShow: []
+      }
     };
     _this.getGenres = _this.getGenres.bind(_assertThisInitialized(_this));
+    _this.filterMovies = _this.filterMovies.bind(_assertThisInitialized(_this));
+    _this.toggleOrganize = _this.toggleOrganize.bind(_assertThisInitialized(_this));
+    _this.toggleUnwatched = _this.toggleUnwatched.bind(_assertThisInitialized(_this));
     return _this;
   }
 
@@ -43270,6 +43352,69 @@ function (_React$Component) {
     key: "componentDidMount",
     value: function componentDidMount() {
       (0, _getMovieData.fetchGenres)(this.getGenres);
+      var currentMovieData = (0, _tempData.dataFromDB)();
+
+      if (!currentMovieData) {
+        this.getDataFromServer();
+      } else {
+        this.setState({
+          movies: currentMovieData
+        });
+      }
+
+      document.querySelector(".tgl-btn").addEventListener('click', this.toggleOrganize);
+      document.querySelector("#includedUnwatched").checked = true;
+      document.querySelector("#includedUnwatched").addEventListener('click', this.toggleUnwatched);
+    }
+  }, {
+    key: "getDataFromServer",
+    value: function getDataFromServer() {
+      var _this2 = this;
+
+      var movies = [];
+
+      function createData(rawData) {
+        console.log(rawData);
+        var movie = {
+          id: rawData.id,
+          title: rawData.title,
+          description: rawData.overview,
+          year: rawData.release_date.slice(0, 4),
+          release_date: rawData.release_date,
+          watched: true,
+          rating: null,
+          genre: rawData.genres,
+          runtime: rawData.runtime,
+          quality: null,
+          subtitles: null,
+          franchise: null,
+          tags: [],
+          poster: "http://image.tmdb.org/t/p/w500".concat(rawData.poster_path),
+          backdrop: "http://image.tmdb.org/t/p/w1280".concat(rawData.backdrop_path)
+        };
+        movies.push(movie);
+        console.log(movies);
+      }
+
+      var movieSearchData = (0, _tempData.dataForDB)();
+      console.log(movieSearchData);
+      var counter = 0;
+      console.log("movieSearchData is " + movieSearchData.length);
+      this.interval = window.setInterval(function () {
+        var requestURL = (0, _getMovieData.createSearchRequest)(movieSearchData[counter]);
+        (0, _getMovieData.fetchData)(requestURL, createData); //so for some reason setState only updates when the interval runs the next time, which is probably related to the delay of the fetch, but I can't add setState to createData because it's not a class function and I TRIED making createData a class function AND a callback function, and that didn't work. So we can try again later. For now, just sticking another Endgame at the end of the search JSON.
+        //Possible solution to above comment's problem - need to bind the function to "this" at the beginning of the componentDidMount function?
+
+        _this2.setState({
+          movies: movies
+        });
+
+        counter += 1;
+
+        if (counter >= movieSearchData.length) {
+          clearInterval(_this2.interval);
+        }
+      }, 500);
     }
   }, {
     key: "getGenres",
@@ -43280,7 +43425,75 @@ function (_React$Component) {
         this.setState({
           genres: data.genres
         });
+        this.setState(function (prevState) {
+          return {
+            genres: data.genres,
+            movieDisplay: _objectSpread({}, prevState.movieDisplay, {
+              genresToShow: data.genres
+            })
+          };
+        });
       }
+    } //TO DO - combine and generalize these 2 functions
+
+  }, {
+    key: "toggleOrganize",
+    value: function toggleOrganize(event) {
+      console.log('in toggleOrganize');
+      var checkbox = document.querySelector(".tgl");
+
+      if (checkbox.checked === true) {
+        //alphabetize
+        console.log("alphabetizing");
+        this.setState(function (prevState) {
+          return {
+            movieDisplay: _objectSpread({}, prevState.movieDisplay, {
+              alphabetize: true
+            })
+          };
+        });
+      } else {
+        console.log('randomizing');
+        this.setState(function (prevState) {
+          return {
+            movieDisplay: _objectSpread({}, prevState.movieDisplay, {
+              alphabetize: false
+            })
+          };
+        });
+      }
+    }
+  }, {
+    key: "toggleUnwatched",
+    value: function toggleUnwatched(event) {
+      console.log("in toggleUnwatched");
+      var checkbox = event.target;
+
+      if (checkbox.checked === true) {
+        console.log("including not watched");
+        this.setState(function (prevState) {
+          return {
+            movieDisplay: _objectSpread({}, prevState.movieDisplay, {
+              excludeNotWatched: false
+            })
+          };
+        });
+      } else {
+        console.log("excluding not watched");
+        this.setState(function (prevState) {
+          return {
+            movieDisplay: _objectSpread({}, prevState.movieDisplay, {
+              excludeNotWatched: true
+            })
+          };
+        });
+      }
+    }
+  }, {
+    key: "filterMovies",
+    value: function filterMovies(filter, willAdd) {
+      console.log(filter);
+      console.log(willAdd);
     }
   }, {
     key: "render",
@@ -43299,7 +43512,14 @@ function (_React$Component) {
       }), _react.default.createElement("label", {
         className: "tgl-btn",
         htmlFor: "cb1"
-      }))), _react.default.createElement(_MovieContainer.default, null));
+      }))), _react.default.createElement(_Sidebar.default, {
+        genres: this.state.genres,
+        callback: this.filterMovies
+      }), _react.default.createElement(_MovieContainer.default, {
+        movies: this.state.movies,
+        sidebarOpen: this.state.sidebarOpen,
+        movieDisplay: this.state.movieDisplay
+      }));
     }
   }]);
 
@@ -43314,7 +43534,7 @@ function (_React$Component) {
 -Front End Masters: Deep Foundations of JS has binding
 -https://medium.freecodecamp.org/the-best-way-to-bind-event-handlers-in-react-282db2cf1530
  */
-},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","@reach/router":"../node_modules/@reach/router/es/index.js","./components/MovieContainer":"js/components/MovieContainer.js","./functions/getMovieData":"js/functions/getMovieData.js","../sass/main.scss":"sass/main.scss"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"react":"../node_modules/react/index.js","react-dom":"../node_modules/react-dom/index.js","@reach/router":"../node_modules/@reach/router/es/index.js","./components/Sidebar":"js/components/Sidebar.js","./components/MovieContainer":"js/components/MovieContainer.js","./data/tempData":"js/data/tempData.js","./functions/getMovieData":"js/functions/getMovieData.js","../sass/main.scss":"sass/main.scss"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -43342,7 +43562,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62719" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63031" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -473,10 +473,6 @@ function dataForDB() {
 		   "year": null
 		 },
 		 {
-		   "title": "The Hunger Games 2: Catching Fire",
-		   "year": null
-		 },
-		 {
 		   "title": "I Love You Phillip Morris",
 		   "year": null
 		 },

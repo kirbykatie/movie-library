@@ -13,15 +13,13 @@ class MovieCard extends React.Component {
 		this.handleCloseModal = this.handleCloseModal.bind(this);
 	}
 
-	componentDidMount() {
-		window.addEventListener("click", this.handleWindowClick);
-	}
-
 	handleCardClick(e) {
-		e.preventDefault();
-		this.setState({
-			showDetails: true
-		})
+		if (!this.props.sidebarOpen) {
+			e.preventDefault();
+			this.setState({
+				showDetails: true
+			})
+		}
 	}
 
 	handleCloseModal(e) {
