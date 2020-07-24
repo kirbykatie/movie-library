@@ -1,0 +1,26 @@
+{
+  "name": "movie-library",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html",
+    "build": "parcel build src/index.html",
+    "updateTestData": "node --require dotenv/config scripts/updateTestData.js node scripts/updateTestData.js"
+  },
+  "keywords": [],
+  "author": "Katie Blackstone",
+  "license": "ISC",
+  "dependencies": {
+    "components": "^0.1.0",
+    "node-fetch": "^2.6.0",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "dotenv": "^8.2.0",
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.26.10"
+  },
+  "type": "module"
+}
