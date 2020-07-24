@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 
 const MovieCard = props => {
-  const { data } = props;
+  const { data, updateActiveMovieCallback } = props;
 
   return (
-    <div data-testid="MovieCard" className="moviecard">
+    <div data-testid="MovieCard" className="moviecard" onClick={() => updateActiveMovieCallback(data)}>
       <div className="moviecard_img">
 					<img src={data.poster}/>
 				</div>

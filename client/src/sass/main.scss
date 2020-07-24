@@ -52,6 +52,10 @@ table {
 /************************ 4 - Elements ***********************/
 // bare HTML elements (H1, a, p, etc…)
 
+html {
+	overflow-x: hidden;
+}
+
 h1, h2, h3, h4, h5, h6, p, a, div {
 	font-family:'Lato', Helvetica, Arial, sans-serif;
 }
@@ -132,12 +136,23 @@ main {
 	
 }
 
-#modal {
+.modal {
 	position:fixed;
 	top:0;
 	left:0;
-	width:100%;
+	width:100vw;
+	height:100vh;
+	background-color: rgba(0, 0, 0, 0.8);
 	z-index:999;
+	display: none;
+	&.modal-show {
+		display: block;
+	}
+	div {
+		width: 500px;
+		height:250px;
+		background-color: white;
+	}
 }
 .details_wrap {
 	display:flex;
