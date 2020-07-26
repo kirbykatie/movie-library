@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 
 
 const Modal = props => {
-  const { show, children } = props;
+  const { handleClickCallback, show, children } = props;
   const showHideClassName = show ? "modal modal-show" : "modal";
 
-  const handleModalClose = event => {
-    console.log(event.target)
+  // TODO: Make keyboard accessible
+  const handleKeyPress = event => {
+    console.log(event.key)
   }
 
   return (
-    <div data-testid="Modal" className={showHideClassName} onClick={handleModalClose}>
-      <section className="modal-main">
+    <div data-testid="Modal" className={showHideClassName} onClick={handleClickCallback} onKeyPress={handleKeyPress}>
+      <section className="modal_wrap">
         {children}
       </section>
     </div>
