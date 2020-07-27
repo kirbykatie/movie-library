@@ -7,15 +7,15 @@ import Modal from '../Modal/Modal';
 import MovieDetailCard from '../MovieDetailCard/MovieDetailCard';
 
 const MovieContainer = props => {
-  const { propsAlpha, propsInclude } = props;
-  const [renderSettings, setRenderSettings] = useState({
+  const { propsAlpha, propsInclude, filters } = props;
+  /*const [renderSettings, setRenderSettings] = useState({
     isAlpha: propsAlpha,
-    includeNotWatched: propsInclude,
-  })
+    ...filters
+  })*/
+  const [isAlpha, setIsAlpha] = useState(propsAlpha);
   const [allMovies, setAllMovies] = useState([]);
   const [renderedMovies, setRenderedMovies] = useState([]);
   const [activeMovie, setActiveMovie] = useState(null);
-  const [excludeNotWatched, setExcludeNotWatched] = useState(false);
 
   useEffect(() => {
     let currentMovieData = movieData();
@@ -32,17 +32,24 @@ const MovieContainer = props => {
   }, [])
 
   useEffect(() => {
-    setRenderSettings(prevState => {return {...prevState, isAlpha: propsAlpha}})
+    //setRenderSettings(prevState => {return {...prevState, isAlpha: propsAlpha}})
+    setIsAlpha(propsAlpha)
     if (renderedMovies.length > 0) {
       setRenderedMovies(updateMovieOrder())
     }
   }, [propsAlpha])
 
   useEffect(() => {
+    console.log(`filters.includeNotWatched has been updated to ${filters.includeNotWatched}`)
+    //setRenderSettings(prevState => {return {...prevState, includeNotWatched: filters.includeNotWatched}})
     if (renderedMovies.length > 0) {
-      setRenderedMovies(updateFilters('includeNotWatched'))
+      setRenderedMovies(updateFilters())
     }
-  }, [propsInclude])
+  }, [filters])
+
+  useEffect(() => {
+    console.warn('AllMovies has updated')
+  }, [allMovies])
 
 
   const updateMovieOrder = nonStateMovies => {
@@ -56,21 +63,28 @@ const MovieContainer = props => {
     return newMovieOrder;
   }
 
-  const updateFilters = changedFilter => {
-    let newMoviesRendered = [];
-    switch (changedFilter) {
-      case "includeNotWatched":
-        if (propsInclude) {
-          newMoviesRendered = allMovies;
-        } else {
-          newMoviesRendered = allMovies.filter(movie => movie.watched == true);
-        }
-        console.log(newMoviesRendered)
-        break;
-      default:
-        break;
+  const updateFilters = () => {
+    let newMoviesRendered = allMovies;
+    //Include Not Watched
+    newMoviesRendered = filters.includeNotWatched ? newMoviesRendered : newMoviesRendered.filter(movie => movie.watched == true);
+
+    //Filter Genres
+    if (filters.genres.length > 0) {
+      const selectedGenreIds = filters.genres.map(genre => genre.id);
+      newMoviesRendered = newMoviesRendered.filter(movie => 
+        movie.genre.some(genre => selectedGenreIds.includes(genre.id))
+      )
     }
-    if (!renderSettings.isAlpha) {
+    //Filter Rating
+    if (filters.rating > 0) {
+      newMoviesRendered = newMoviesRendered.filter(movie => 
+        movie.rating >= filters.rating || movie.rating === null
+      )
+    }
+    console.log(newMoviesRendered)
+    
+  
+    if (!isAlpha) {
       newMoviesRendered = updateMovieOrder(newMoviesRendered)
     }
     return newMoviesRendered;
@@ -85,7 +99,7 @@ const MovieContainer = props => {
     }
   })
 
-  console.log(renderSettings);
+  //console.log(renderSettings);
   return (
   <>
     <main data-testid="MovieContainer">
