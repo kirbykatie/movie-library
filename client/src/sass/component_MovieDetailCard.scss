@@ -28,3 +28,17 @@
 		font-weight:900;
 	}
 }
+
+.details_edit_btn {
+	position: absolute;
+	top: 5;
+	right: 5;
+}
+
+.details_container_edit {
+	.details_content {
+		h1 {
+			font-style: italic;
+		}
+	}
+}

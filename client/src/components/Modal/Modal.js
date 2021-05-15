@@ -8,7 +8,7 @@ const Modal = props => {
 
   // TODO: Make keyboard accessible
   const handleKeyPress = event => {
-    console.log(event.key)
+    // console.log(event.key)
   }
 
   return (

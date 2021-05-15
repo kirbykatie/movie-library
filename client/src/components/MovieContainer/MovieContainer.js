@@ -5,9 +5,11 @@ import arrShuffle from '../../utils/arrShuffle';
 import MovieCard from '../MovieCard/MovieCard';
 import Modal from '../Modal/Modal';
 import MovieDetailCard from '../MovieDetailCard/MovieDetailCard';
+import MovieEditDetails from '../MovieEditDetails/MovieEditDetails';
 
 const MovieContainer = props => {
-  const { propsAlpha, propsInclude, filters } = props;
+  //TODO make genre options a context instead of prop drilling
+  const { propsAlpha, propsInclude, filters, genreOptions } = props;
   /*const [renderSettings, setRenderSettings] = useState({
     isAlpha: propsAlpha,
     ...filters
@@ -16,19 +18,34 @@ const MovieContainer = props => {
   const [allMovies, setAllMovies] = useState([]);
   const [renderedMovies, setRenderedMovies] = useState([]);
   const [activeMovie, setActiveMovie] = useState(null);
+  const [editIsOpen, setEditIsOpen] = useState(false)
 
   useEffect(() => {
-    let currentMovieData = movieData();
-		if (!currentMovieData) {
-			//getDataFromServer();
-		} else {
-      currentMovieData = updateMovieOrder(currentMovieData);
-      // Once set on component mount, allMovies should not get updated again!
-      // It is the source of truth for the movie data
-      setAllMovies(currentMovieData);
-      console.log(currentMovieData)
-      setRenderedMovies(currentMovieData);
+    const jsonBinKey = atob(process.env.JSONBIN_KEY)
+    const jsonBinId = process.env.JSONBIN_ID
+    async function getMovieData() {
+      fetch(`https://api.jsonbin.io/b/${jsonBinId}`, {
+        headers: {
+          "secret-key": jsonBinKey
+        }
+      }).then(response => response.json())
+        .then(data => {
+          let currentMovieData = data;
+          console.log(currentMovieData)
+          if (!currentMovieData) {
+            //getDataFromServer();
+          } else {
+            currentMovieData = updateMovieOrder(currentMovieData);
+            // Once set on component mount, allMovies should not get updated again!
+            // It is the source of truth for the movie data
+            setAllMovies(currentMovieData);
+            console.log(currentMovieData)
+            setRenderedMovies(currentMovieData);
+          }
+        })
+        .catch(err => console.error(err))
     }
+		getMovieData()
   }, [])
 
   useEffect(() => {
@@ -49,7 +66,18 @@ const MovieContainer = props => {
 
   useEffect(() => {
     console.warn('AllMovies has updated')
+    // updateFilters();
   }, [allMovies])
+
+  const updateMovieData = (newMovieData) => {
+    let newMovies = allMovies;
+    newMovies.forEach(movie => {
+      if (movie.id = newMovieData.id) {
+        movie = newMovieData
+      }
+    })
+    setAllMovies(newMovies)
+  }
 
 
   const updateMovieOrder = nonStateMovies => {
@@ -93,9 +121,10 @@ const MovieContainer = props => {
 
   const handleModalClick = (event => {
     event.stopPropagation();
-    if (event.target.classList.contains('modal')) {
+    if (event.target.classList && event.target.classList.contains('modal')) {
       event.target.classList.remove('modal-show');
       setActiveMovie(null);
+      setEditIsOpen(false)
     }
   })
 
@@ -120,7 +149,11 @@ const MovieContainer = props => {
       handleClickCallback={handleModalClick}
     >
       {activeMovie ? 
-         <MovieDetailCard movie={activeMovie} />
+         <MovieDetailCard 
+          movie={activeMovie} 
+          enableEditMode={() => setEditIsOpen(true)}
+          genreOptions={genreOptions}
+        />
       : null }
     </Modal>
   </>

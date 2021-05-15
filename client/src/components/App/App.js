@@ -19,13 +19,15 @@ const App = () => {
   const [genreOptions, setGenreOptions] = useState([])
 
   //Eventually will save this data in local DB so app won't need to rely on 3rd party API to run
+  //Gets genres available in movie DB
+  //TODO - remove genre options that are not used in library
   useEffect(() => {
     const requestURL = `https://api.themoviedb.org/3/genre/movie/list?api_key=${process.env.MOVIEDB_API}&language=en-US`;
 		fetch(requestURL)
 			.then((response) => response.json())
 			.then((data) => {
 				setGenreOptions(data.genres)
-			})
+      })
   },[])
 
   const classes = useStyles();
@@ -73,6 +75,7 @@ const App = () => {
       propsAlpha={isAlpha}
       propsInclude={includeNotWatched}
       filters={filters}
+      genreOptions={genreOptions}
     />
   </div>
   )
